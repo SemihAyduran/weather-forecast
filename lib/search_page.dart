@@ -8,8 +8,28 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+
+void birFonksiyon(){
+  print('çalıştı');
+}
+
+@override 
+  void initState() {
+print('initState çalıştı ve gps verisi isteniyor');
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // sayfa kaldırılırken run edilecek metotlar
+    print('dispose metodu çalıştı ve logout istendi ');
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+birFonksiyon();
+
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -34,6 +54,11 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(onPressed: () {setState(() {
+          
+        });
+          
+        },),
       ),
     );
   }
