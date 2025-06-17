@@ -14,10 +14,10 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/search.jfif'),
+          image: AssetImage('assets/home.jfif'),
           fit: BoxFit.cover,
         ),
       ),
@@ -40,7 +40,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   style: TextStyle(color: Colors.white,
                               fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.bold,shadows: <Shadow>[Shadow(color: Colors.black54,blurRadius: 3,offset: Offset(2, 2))]
                               ),
                   textAlign: TextAlign.center,
                 ),
@@ -62,7 +62,8 @@ class _SearchPageState extends State<SearchPage> {
                     _showMyDialog();
                   }
                 },
-                child: Text('Select'),
+                child:     Text('Select',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
               ),
             ],
           ),

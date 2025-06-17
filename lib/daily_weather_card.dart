@@ -8,9 +8,20 @@ class DailyWeatherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    List<String> weekDays = [
+      'Pazartesi',
+      'Salı',
+      'Çarşamba',
+      'Perşembe',
+      'Cuma',
+      'Cumartesi',
+      'Pazar',
+    ];
     final DateTime ts = DateTime.fromMillisecondsSinceEpoch(
       forecastItem.dt! * 1000,
     );
+    String weekday = weekDays[ts.weekday - 1];
     return Card(
       color: Colors.transparent,
       child: SizedBox(
@@ -26,16 +37,37 @@ class DailyWeatherCard extends StatelessWidget {
                 color: Colors.white,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
+                shadows: <Shadow>[
+                  Shadow(
+                    color: Colors.black54,
+                    blurRadius: 3,
+                    offset: Offset(2, 2),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-            Text(
-              '${ts.hour}:${ts.minute}  ${ts.day}/${ts.month}',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-              ),
+            Column(
+              children: [
+                Text(
+                  '$weekday',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    shadows: <Shadow>[
+                      Shadow(
+                        color: Colors.black54,
+                        blurRadius: 3,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                ),
+                // Text(
+                //   '${ts.hour}:${ts.minute.toString().padLeft(2, '0')}',
+                //   style: TextStyle(color: Colors.white, fontSize: 15),
+                // ),
+              ],
             ),
           ],
         ),

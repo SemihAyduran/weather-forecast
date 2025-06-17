@@ -12,7 +12,7 @@ class WeatherDataResponseModel {
   int? timezone;
   int? id;
   String? name;
-  int? cod;
+  dynamic cod;
 
   WeatherDataResponseModel(
       {this.coord,

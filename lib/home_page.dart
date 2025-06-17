@@ -130,9 +130,9 @@ class _HomePageState extends State<HomePage> {
                       ? Column(
                         children: [
                           SizedBox(
-                            height: 100,
+                            height: 200,
                             child: Image.network(
-                              'https://openweathermap.org/img/wn/${weatherLocationData?.weather?.firstOrNull?.icon}@2x.png',
+                              'https://openweathermap.org/img/wn/${weatherLocationData?.weather?.firstOrNull?.icon}@4x.png',
                             ),
                           ),
                           Text(
@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 70,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.bold,shadows: <Shadow>[Shadow(color: Colors.black54,blurRadius: 3,offset: Offset(2, 2))]
                             ),
                           ),
                           Row(
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 30,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.bold,shadows: <Shadow>[Shadow(color: Colors.black54,blurRadius: 3,offset: Offset(2, 2))]
                                 ),
                               ),
                               IconButton(
@@ -188,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: size.height * 0.15),
+                          SizedBox(height: size.height * 0.05),
                           if (dailyWeatherDataResponse != null)
                             SizedBox(
                               height: size.height * 0.23,
