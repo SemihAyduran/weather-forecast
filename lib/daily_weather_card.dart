@@ -1,31 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/weather_data.dart';
+import 'package:weather_forecast/daily_weather_data.dart';
 
 class DailyWeatherCard extends StatelessWidget {
-  const DailyWeatherCard({super.key, this.weatherLocationData});
+  const DailyWeatherCard({super.key, required this.forecastItem});
+  
 
-  final WeatherDataResponseModel? weatherLocationData;
+  final ForecastItem forecastItem;
 
   @override
   Widget build(BuildContext context) {
+    final DateTime ts = DateTime.fromMillisecondsSinceEpoch(forecastItem.dt! *1000 );
     return Card(
       color: Colors.transparent,
       child: SizedBox(
-        width: 70,
+        width: 100,
         child: Column(
           children: [
             Image.network(
-              'https://openweathermap.org/img/wn/${weatherLocationData?.weather?.firstOrNull?.icon}@2x.png',
+              'https://openweathermap.org/img/wn/${forecastItem.weather?[0].icon}@2x.png',
             ),
             Text(
-              "${(weatherLocationData?.main?.temp.toString()) ?? ""}°C",
+              "${(forecastItem.main?.temp.toString())}°C",
               style: TextStyle(
-                color: Colors.black87,
+                color: Colors.white,
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text('Cuma',style: TextStyle(color: Colors.black87,fontSize: 15,
+            SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.025,
+                          ),
+            Text('${ts.hour}:${ts.minute}  ${ts.day}/${ts.month}',style: TextStyle(color: Colors.white,fontSize: 15,
                 fontWeight: FontWeight.bold,))
           ],
         ),
