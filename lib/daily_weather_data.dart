@@ -51,7 +51,7 @@ class ForecastItem {
   Clouds? clouds;
   Wind? wind;
   int? visibility;
-  int? pop;
+  dynamic pop;
   Sys? sys;
   String? dtTxt;
 

@@ -21,7 +21,7 @@ class DailyWeatherCard extends StatelessWidget {
               'https://openweathermap.org/img/wn/${forecastItem.weather?[0].icon}@2x.png',
             ),
             Text(
-              "${(forecastItem.main?.temp.toString())}°C",
+              "${(forecastItem.main?.temp.toStringAsFixed(0))}°C",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 15,

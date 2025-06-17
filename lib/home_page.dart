@@ -53,19 +53,15 @@ class _HomePageState extends State<HomePage> {
       return null;
     }
   }
-
-
-
   Future<Response?> getSelectedLocationWeatherData(
     double lat,
     double long,
   ) async {
     final response = await get(
       Uri.parse(
-        'https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=$key&units=$unit',
+        'https://api.openweathermap.org/data/2.5/forecast?lat=$lat&lon=$long&appid=$key&units=$unit',
       ),
     );
-    print(response.body);
     return response;
   }
 
@@ -79,15 +75,21 @@ class _HomePageState extends State<HomePage> {
         setState(() {});
       }
     });
-    if(devicePosition!=null)
-    {await getSelectedLocationWeatherData(devicePosition!.latitude, devicePosition!.longitude).then((value) {
-      if (value != null) {
-        dailyWeatherDataResponse = DailyWeatherDataResponse.fromJson(
-          json.decode(value.body),
-        );
-        setState(() {});
-      }else{return null;}
-    });}
+    if (devicePosition != null) {
+      await getSelectedLocationWeatherData(
+        devicePosition!.latitude,
+        devicePosition!.longitude,
+      ).then((value) {
+        if (value != null) {
+          dailyWeatherDataResponse = DailyWeatherDataResponse.fromJson(
+            json.decode(value.body),
+          );
+          setState(() {});
+        } else {
+          return null;
+        }
+      });
+    }
   }
 
   List<ForecastItem> getDailyForecasts(List<ForecastItem> fullList) {
@@ -134,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            "${(weatherLocationData!.main?.temp.toString()) ?? ""}°C",
+                            "${(weatherLocationData!.main?.temp?.toStringAsFixed(0)) ?? ""}°C",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 70,
@@ -146,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                               Text(
                                 weatherLocationData!.name ?? "",
                                 style: TextStyle(
-                                  color: Colors.green,
+                                  color: Colors.white,
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -182,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                                   });
                                   setState(() {});
                                 },
-                                icon: Icon(Icons.search),
+                                icon: Icon(Icons.search, color: Colors.white,),
                               ),
                             ],
                           ),

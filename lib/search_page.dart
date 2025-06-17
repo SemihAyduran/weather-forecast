@@ -38,7 +38,10 @@ class _SearchPageState extends State<SearchPage> {
                     hintText: 'Şehir Seçiniz',
                     border: OutlineInputBorder(borderSide: BorderSide.none),
                   ),
-                  style: TextStyle(fontSize: 30),
+                  style: TextStyle(color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -50,6 +53,7 @@ class _SearchPageState extends State<SearchPage> {
                       'https://api.openweathermap.org/data/2.5/weather?q=$selectedCity&appid=0f67d81607184f302913efa856997820',
                     ),
                   );
+                  
                   print(response.body);
                   if (response.statusCode == 200) {
                     
