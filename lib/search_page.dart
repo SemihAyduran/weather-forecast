@@ -44,13 +44,15 @@ class _SearchPageState extends State<SearchPage> {
               ),
               ElevatedButton(
                 onPressed: () async {
+                  selectedCity = selectedCity.trim();
                   var response = await get(
                     Uri.parse(
                       'https://api.openweathermap.org/data/2.5/weather?q=$selectedCity&appid=0f67d81607184f302913efa856997820',
                     ),
                   );
-
+                  print(response.body);
                   if (response.statusCode == 200) {
+                    
                     Navigator.pop(context, selectedCity);
                   } else {
                     _showMyDialog();

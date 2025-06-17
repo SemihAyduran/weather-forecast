@@ -3,13 +3,14 @@ import 'package:weather_forecast/daily_weather_data.dart';
 
 class DailyWeatherCard extends StatelessWidget {
   const DailyWeatherCard({super.key, required this.forecastItem});
-  
 
   final ForecastItem forecastItem;
 
   @override
   Widget build(BuildContext context) {
-    final DateTime ts = DateTime.fromMillisecondsSinceEpoch(forecastItem.dt! *1000 );
+    final DateTime ts = DateTime.fromMillisecondsSinceEpoch(
+      forecastItem.dt! * 1000,
+    );
     return Card(
       color: Colors.transparent,
       child: SizedBox(
@@ -27,11 +28,15 @@ class DailyWeatherCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.025,
-                          ),
-            Text('${ts.hour}:${ts.minute}  ${ts.day}/${ts.month}',style: TextStyle(color: Colors.white,fontSize: 15,
-                fontWeight: FontWeight.bold,))
+            SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+            Text(
+              '${ts.hour}:${ts.minute}  ${ts.day}/${ts.month}',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),

@@ -132,7 +132,7 @@ class Main {
   double? temp;
   double? feelsLike;
   double? tempMin;
-  double? tempMax;
+  dynamic tempMax;
   int? pressure;
   int? humidity;
   int? seaLevel;

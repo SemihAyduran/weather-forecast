@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<Response?> getLocationDataFromApiByLatLon() async {
     if (devicePosition != null) {
-      return get(
+      return await get(
         Uri.parse(
           'https://api.openweathermap.org/data/2.5/weather?lat=${devicePosition!.latitude}&lon=${devicePosition!.longitude}&appid=$key&units=$unit',
         ),
@@ -54,16 +54,19 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<Response?> getDailyWeatherForecastByApi() async {
-    if (devicePosition != null) {
-      return get(
-        Uri.parse(
-          'https://api.openweathermap.org/data/2.5/forecast?lat=${devicePosition!.latitude}&lon=${devicePosition!.longitude}&appid=$key&units=$unit',
-        ),
-      );
-    } else {
-      return null;
-    }
+
+
+  Future<Response?> getSelectedLocationWeatherData(
+    double lat,
+    double long,
+  ) async {
+    final response = await get(
+      Uri.parse(
+        'https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=$key&units=$unit',
+      ),
+    );
+    print(response.body);
+    return response;
   }
 
   Future<void> getInitialData() async {
@@ -76,14 +79,15 @@ class _HomePageState extends State<HomePage> {
         setState(() {});
       }
     });
-    await getDailyWeatherForecastByApi().then((value) {
+    if(devicePosition!=null)
+    {await getSelectedLocationWeatherData(devicePosition!.latitude, devicePosition!.longitude).then((value) {
       if (value != null) {
         dailyWeatherDataResponse = DailyWeatherDataResponse.fromJson(
           json.decode(value.body),
         );
         setState(() {});
-      }
-    });
+      }else{return null;}
+    });}
   }
 
   List<ForecastItem> getDailyForecasts(List<ForecastItem> fullList) {
@@ -97,9 +101,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final dailyList = dailyWeatherDataResponse?.list != null
-        ? getDailyForecasts(dailyWeatherDataResponse!.list!)
-        : [];
+    final dailyList =
+        dailyWeatherDataResponse?.list != null
+            ? getDailyForecasts(dailyWeatherDataResponse!.list!)
+            : [];
 
     return Container(
       decoration: BoxDecoration(
@@ -121,72 +126,83 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   weatherLocationData != null
                       ? Column(
-                          children: [
+                        children: [
+                          SizedBox(
+                            height: 100,
+                            child: Image.network(
+                              'https://openweathermap.org/img/wn/${weatherLocationData?.weather?.firstOrNull?.icon}@2x.png',
+                            ),
+                          ),
+                          Text(
+                            "${(weatherLocationData!.main?.temp.toString()) ?? ""}°C",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 70,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                weatherLocationData!.name ?? "",
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () async {
+                                  final selectedCity = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SearchPage(),
+                                    ),
+                                  );
+                                  location = selectedCity;
+                                  weatherLocationData = null;
+                                  await getLocationDataFromApi().then((value) {
+                                    if (value != null) {
+                                      weatherLocationData =
+                                          WeatherDataResponseModel.fromJson(
+                                            json.decode(value.body),
+                                          );
+                                    }
+                                  });
+                                  await getSelectedLocationWeatherData(
+                                    weatherLocationData!.coord!.lat!,
+                                    weatherLocationData!.coord!.lon!,
+                                  ).then((value) {
+                                    if (value != null) {
+                                      dailyWeatherDataResponse =
+                                          DailyWeatherDataResponse.fromJson(
+                                            json.decode(value.body),
+                                          );
+                                    }
+                                  });
+                                  setState(() {});
+                                },
+                                icon: Icon(Icons.search),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: size.height * 0.15),
+                          if (dailyWeatherDataResponse != null)
                             SizedBox(
-                              height: 100,
-                              child: Image.network(
-                                'https://openweathermap.org/img/wn/${weatherLocationData?.weather?.firstOrNull?.icon}@2x.png',
+                              height: size.height * 0.23,
+                              width: size.width * 0.9,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: dailyList.length,
+                                itemBuilder: (context, index) {
+                                  return DailyWeatherCard(
+                                    forecastItem: dailyList[index],
+                                  );
+                                },
                               ),
                             ),
-                            Text(
-                              "${(weatherLocationData!.main?.temp.toString()) ?? ""}°C",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 70,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  weatherLocationData!.name ?? "",
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: () async {
-                                    final selectedCity = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SearchPage(),
-                                      ),
-                                    );
-                                    location = selectedCity;
-                                    weatherLocationData = null;
-                                    getLocationDataFromApi().then((value) {
-                                      if (value != null) {
-                                        weatherLocationData =
-                                            WeatherDataResponseModel.fromJson(
-                                          json.decode(value.body),
-                                        );
-                                        setState(() {});
-                                      }
-                                    });
-                                  },
-                                  icon: Icon(Icons.search),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: size.height * 0.15),
-                            if (dailyWeatherDataResponse != null)
-                              SizedBox(
-                                height: size.height * 0.23,
-                                width: size.width * 0.9,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: dailyList.length,
-                                  itemBuilder: (context, index) {
-                                    return DailyWeatherCard(
-                                      forecastItem: dailyList[index],
-                                    );
-                                  },
-                                ),
-                              ),
-                          ],
-                        )
+                        ],
+                      )
                       : CircularProgressIndicator(),
                 ],
               ),

@@ -5,7 +5,13 @@ class DailyWeatherDataResponse {
   List<ForecastItem>? list;
   City? city;
 
-  DailyWeatherDataResponse({this.cod, this.message, this.cnt, this.list, this.city});
+  DailyWeatherDataResponse({
+    this.cod,
+    this.message,
+    this.cnt,
+    this.list,
+    this.city,
+  });
 
   DailyWeatherDataResponse.fromJson(Map<String, dynamic> json) {
     cod = json['cod'].toString();
@@ -33,8 +39,9 @@ class DailyWeatherDataResponse {
     }
     return data;
   }
-   @override
-  String toString() =>  toJson().toString();
+
+  @override
+  String toString() => toJson().toString();
 }
 
 class ForecastItem {
@@ -57,7 +64,7 @@ class ForecastItem {
     this.visibility,
     this.pop,
     this.sys,
-    this.dtTxt
+    this.dtTxt,
   });
 
   ForecastItem.fromJson(Map<String, dynamic> json) {
@@ -100,6 +107,7 @@ class ForecastItem {
     data['dt_txt'] = dtTxt;
     return data;
   }
+
   @override
   String toString() => toJson().toString();
 }
@@ -109,7 +117,7 @@ class Main {
   dynamic feelsLike;
   dynamic tempMin;
   dynamic tempMax;
- dynamic pressure;
+  dynamic pressure;
   dynamic seaLevel;
   dynamic grndLevel;
   dynamic humidity;
@@ -124,7 +132,7 @@ class Main {
     this.seaLevel,
     this.grndLevel,
     this.humidity,
-    this.tempKf
+    this.tempKf,
   });
 
   Main.fromJson(Map<String, dynamic> json) {
@@ -152,6 +160,7 @@ class Main {
     data['temp_kf'] = tempKf;
     return data;
   }
+
   @override
   String toString() => toJson().toString();
 }
@@ -179,6 +188,7 @@ class Weather {
     data['icon'] = icon;
     return data;
   }
+
   @override
   String toString() => toJson().toString();
 }
@@ -197,12 +207,13 @@ class Clouds {
     data['all'] = all;
     return data;
   }
+
   @override
   String toString() => toJson().toString();
 }
 
 class Wind {
-  double? speed;
+  dynamic speed;
   int? deg;
   dynamic gust;
 
@@ -221,6 +232,7 @@ class Wind {
     data['gust'] = gust;
     return data;
   }
+
   @override
   String toString() => toJson().toString();
 }
@@ -239,6 +251,7 @@ class Sys {
     data['pod'] = pod;
     return data;
   }
+
   @override
   String toString() => toJson().toString();
 }
@@ -261,7 +274,7 @@ class City {
     this.population,
     this.timezone,
     this.sunrise,
-    this.sunset
+    this.sunset,
   });
 
   City.fromJson(Map<String, dynamic> json) {
@@ -289,6 +302,7 @@ class City {
     data['sunset'] = sunset;
     return data;
   }
+
   @override
   String toString() => toJson().toString();
 }
@@ -310,6 +324,7 @@ class Coord {
     data['lon'] = lon;
     return data;
   }
+
   @override
   String toString() => toJson().toString();
 }
